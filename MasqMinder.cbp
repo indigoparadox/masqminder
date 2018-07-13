@@ -31,6 +31,28 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="src/bstrlib/bstrlib.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/bstrlib/bstrlib.h" />
+		<Unit filename="src/http.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/http.h" />
+		<Unit filename="src/main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/mem.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/mem.h" />
+		<Unit filename="src/netipc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/vector.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/vector.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

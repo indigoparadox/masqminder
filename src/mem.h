@@ -4,6 +4,11 @@
 
 #include <stdlib.h>
 
+typedef enum {
+   FALSE = 0,
+   TRUE = 1
+} BOOL;
+
 #define mem_alloc( count, type ) \
    (type*)mem_alloc_internal( count, sizeof( type ) )
 #define mem_realloc( ptr, count, type ) \

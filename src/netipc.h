@@ -5,13 +5,9 @@
 #include <stdint.h>
 
 #include "bstrlib/bstrlib.h"
+#include "mem.h"
 
 #define IPC_BUFFER_LEN 80
-
-typedef enum {
-   FALSE = 0,
-   TRUE = 1
-} BOOL;
 
 typedef enum IPC_END {
    IPC_END_SERVER,

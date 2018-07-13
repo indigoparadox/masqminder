@@ -35,6 +35,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/bstrlib/bstrlib.h" />
+		<Unit filename="src/htmtree.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/htmtree.h" />
 		<Unit filename="src/http.c">
 			<Option compilerVar="CC" />
 		</Unit>

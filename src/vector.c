@@ -132,7 +132,9 @@ int vector_insert( struct VECTOR* v, size_t index, void* data ) {
    ok = TRUE;
 
    if( VECTOR_SIZE_MAX <= index ) {
+#ifdef DEBUG
       fprintf( stderr, "Error: Vector full!\n" );
+#endif /* DEBUG */
       err = VECTOR_ERR_FULL;
       goto cleanup;
    }
@@ -188,7 +190,9 @@ int vector_add( struct VECTOR* v, void* data ) {
 
    if( v->size == v->count ) {
       if( VECTOR_SIZE_MAX <= v->size * 2 ) {
+#ifdef DEBUG
          fprintf( stderr, "Error: Vector full!\n" );
+#endif /* DEBUG */
          err = VECTOR_ERR_FULL;
          goto cleanup;
       }
@@ -198,7 +202,9 @@ int vector_add( struct VECTOR* v, void* data ) {
    }
 
    if( VECTOR_SIZE_MAX <= v->count + 1 ) {
+#ifdef DEBUG
       fprintf( stderr, "Error: Vector full!\n" );
+#endif /* DEBUG */
       err = VECTOR_ERR_FULL;
       goto cleanup;
    }
@@ -239,11 +245,13 @@ void vector_add_scalar( struct VECTOR* v, int32_t value, BOOL allow_dupe ) {
    if( FALSE == allow_dupe ) {
       for( i = 0 ; NULL != v->scalar_data && v->count > i ; i++ ) {
          if( v->scalar_data[i] == value ) {
+#ifdef DEBUG
             fprintf(
                stderr,
                "Warning: Attempted to add duplicate %d to scalar vector.\n",
                value
             );
+#endif /* DEBUG */
             goto cleanup;
          }
       }

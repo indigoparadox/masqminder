@@ -14,6 +14,13 @@ enum html_tree_state {
    HTML_TREE_IN_ENTITY
 };
 
+struct html_tree_tag;
+
+union html_tree_contents {
+   struct html_tree_tag* first_child;
+   bstring data;
+};
+
 struct html_tree_attr {
    bstring label;
    bstring value;

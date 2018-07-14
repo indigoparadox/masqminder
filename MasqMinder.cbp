@@ -28,6 +28,22 @@
 					<Add option="-s" />
 				</Linker>
 			</Target>
+			<Target title="Check">
+				<Option platforms="Unix;" />
+				<Option output="bin/Test/MarqMinderCheck" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Test-MarqMinder" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-DDEBUG" />
+				</Compiler>
+				<Linker>
+					<Add library="check_pic" />
+					<Add library="pthread" />
+					<Add library="rt" />
+					<Add library="m" />
+				</Linker>
+			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
@@ -36,6 +52,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/bstrlib/bstrlib.h" />
+		<Unit filename="src/hashmap.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/hashmap.h" />
 		<Unit filename="src/htmtree.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -46,6 +66,8 @@
 		<Unit filename="src/http.h" />
 		<Unit filename="src/main.c">
 			<Option compilerVar="CC" />
+			<Option target="Release" />
+			<Option target="Debug" />
 		</Unit>
 		<Unit filename="src/mem.c">
 			<Option compilerVar="CC" />
@@ -58,6 +80,21 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/vector.h" />
+		<Unit filename="test/check_data.c">
+			<Option compilerVar="CC" />
+			<Option target="Check" />
+		</Unit>
+		<Unit filename="test/check_data.h">
+			<Option target="Check" />
+		</Unit>
+		<Unit filename="test/check_hashmap.c">
+			<Option compilerVar="CC" />
+			<Option target="Check" />
+		</Unit>
+		<Unit filename="test/check_main.c">
+			<Option compilerVar="CC" />
+			<Option target="Check" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />

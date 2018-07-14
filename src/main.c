@@ -54,6 +54,7 @@ struct html_tree* build_doc() {
 int main( int argc, char** argv ) {
    struct CONNECTION client = { 0 };
    struct CONNECTION n = { 0 };
+   struct HTTP_TREE tree = { 0 };
    int retval = 0;
    int fork_res = 0;
    pid_t pid = 0;

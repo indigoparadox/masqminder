@@ -75,13 +75,17 @@ cleanup:
    return written;
 }
 
-void http_handle_connection( struct CONNECTION* client, bstring body ) {
-   bstring buffer = NULL;
+void http_handle_connection(
+   struct CONNECTION* client, struct HTTP_TREE* tree
+) {
+   bstring buffer = NULL,
+      req_path = NULL;
    int written = 0,
       read = 0;
 #ifdef DEBUG
    pid_t pid = 0;
 #endif /* DEBUG */
+   bstring body = NULL;
 
    buffer = bfromcstr( "" );
 
@@ -96,7 +100,7 @@ void http_handle_connection( struct CONNECTION* client, bstring body ) {
       printf( "%d: Read %d: %s", pid, read, bdata( buffer ) );
 #endif /* DEBUG */
 
-      if( 0 == strncmp( bdata( buffer ), "GET", 3 ) ) {
+      if( 1 == bisstemeqStatic( buffer, "GET" ) ) {
          written = http_handle_get( client, body );
          goto cleanup;
       }
@@ -115,3 +119,18 @@ cleanup:
    return;
 }
 
+struct HTTP_NODE* http_tree_get_path( struct HTTP_TREE* tree, bstring path ) {
+
+}
+
+void http_tree_add_directory(
+   struct HTTP_NODE* parent, bstring name, bstring contents
+) {
+
+}
+
+void http_tree_add_file(
+   struct HTTP_NODE* parent, bstring name, bstring contents
+) {
+
+}

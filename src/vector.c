@@ -1,5 +1,8 @@
 
+#ifdef DEBUG
 #include <stdio.h>
+#include <assert.h>
+#endif /* DEBUG */
 
 #include "vector.h"
 
@@ -542,10 +545,10 @@ void vector_lock( struct VECTOR* v, BOOL lock ) {
    #error Locking mechanism undefined!
    #elif defined( DEBUG )
    if( TRUE == lock ) {
-      scaffold_assert( 0 == v->lock_count );
+      assert( 0 == v->lock_count );
       v->lock_count++;
    } else {
-      scaffold_assert( 1 == v->lock_count );
+      assert( 1 == v->lock_count );
       v->lock_count--;
    }
    #endif /* USE_THREADS */

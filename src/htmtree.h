@@ -37,10 +37,21 @@ struct html_tree {
    struct html_tree_tag* current;
 };
 
-void html_tree_new_tag( struct html_tree* tree );
+struct html_tree_tag* html_tree_up( struct html_tree* tree );
+struct html_tree_tag* html_tree_new_tag(
+   struct html_tree* tree, bstring tag_name
+);
+struct html_tree_attr* html_tree_new_attr(
+   struct html_tree_tag* tag, bstring label, bstring value
+);
 int html_tree_parse_string( bstring html_string, struct html_tree* out );
 void html_tree_free_attr( struct html_tree_attr* attr );
 void html_tree_free_tag( struct html_tree_tag* tag );
+bstring html_attr_to_bstr( const struct html_tree_attr* attr );
+size_t html_tag_length( const struct html_tree_tag* tag );
+bstring html_tag_to_bstr( const struct html_tree_tag* tag );
+bstring html_tree_to_bstr( struct html_tree* tree );
+void html_tree_cleanup( struct html_tree_tag* tag );
 
 #endif /* HTMLTREE_H */
 

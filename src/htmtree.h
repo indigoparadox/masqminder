@@ -59,6 +59,7 @@ size_t html_tag_length( const struct html_tree_tag* tag );
 bstring html_tag_to_bstr( const struct html_tree_tag* tag );
 bstring html_tree_to_bstr( struct html_tree* tree );
 void html_tree_cleanup( struct html_tree_tag* tag );
+struct html_tree_tag* html_tree_get_root( struct html_tree* tree );
 
 #endif /* HTMLTREE_H */
 

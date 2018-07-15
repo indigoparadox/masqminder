@@ -790,3 +790,10 @@ bstring html_tree_to_bstr( struct html_tree* tree ) {
       return NULL;
    }
 }
+
+struct html_tree_tag* html_tree_get_root( struct html_tree* tree ) {
+   if( NULL != tree ) {
+      return tree->root;
+   }
+   return NULL;
+}

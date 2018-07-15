@@ -51,10 +51,21 @@ struct html_tree* build_doc() {
    return doc;
 }
 
+struct HTTP_TREE* build_tree( struct html_tree* index ) {
+   struct HTTP_TREE* tree = NULL;
+
+   tree = mem_alloc( 1, struct HTTP_TREE );
+   tree->root_dir = mem_alloc( 1, struct HTTP_NODE );
+   tree->root_dir->type = HTTP_TYPE_DIRECTORY;
+   http_tree_add_file( tree->root_dir, bfromStatic( "index.html" ), index );
+
+   return tree;
+};
+
 int main( int argc, char** argv ) {
    struct CONNECTION client = { 0 };
    struct CONNECTION n = { 0 };
-   struct HTTP_TREE tree = { 0 };
+   struct HTTP_TREE* tree = NULL;
    int retval = 0;
    int fork_res = 0;
    pid_t pid = 0;
@@ -70,22 +81,29 @@ int main( int argc, char** argv ) {
       while( running ) {
          /* Accept new clients */
          if( ipc_accept( &n, &client ) ) {
+#ifdef USE_FORK
             fork_res = fork();
             if( 0 < fork_res ) {
+#endif /* USE_FORK */
                printf( "Parent: Accepted connection: %d\n", fork_res );
+#ifdef USE_FORK
                ipc_stop( &client );
                continue;
             } else if( 0 > fork_res ) {
                fprintf( stderr, "Fork error: %d\n", fork_res );
                continue;
             }
+#endif /* USE_FORK */
 
             pid = getpid();
             doc = build_doc();
-            doc_b = html_tree_to_bstr( doc );
-            //printf( "%s\n", bdata( doc_b ) );
-            http_handle_connection( &client, doc_b );
+            tree = build_tree( doc );
+            http_handle_connection( &client, tree );
+#ifdef USE_FORK
             goto cleanup;
+#else
+            ipc_stop( &client );
+#endif /* USE_FORK */
          }
       }
    }
@@ -96,6 +114,10 @@ cleanup:
    fflush( stdout );
 
    html_tree_cleanup( doc->root );
+   if( NULL != tree ) {
+      http_tree_free_directory( tree->root_dir );
+      mem_free( tree );
+   }
    mem_free( doc );
    bdestroy( doc_b );
    ipc_stop( &n );

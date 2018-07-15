@@ -5,10 +5,9 @@
  * on usage and license.
  */
 
-/*
- * bstrlib.c
- *
- * This file is the core module for implementing the bstring functions.
+/**
+ * @file
+ * @brief This file is the core module for implementing the bstring functions.
  */
 
 #if defined (_MSC_VER)
@@ -34,30 +33,6 @@
 #if defined(MEMORY_DEBUG) || defined(BSTRLIB_MEMORY_DEBUG)
 #include "memdbg.h"
 #endif
-
-/*
-#ifndef bstr__alloc
-#if defined (BSTRLIB_TEST_CANARY)
-void* bstr__alloc (size_t sz) {
-	char* p = (char *) malloc (sz);
-	memset (p, 'X', sz);
-	return p;
-}
-#else
-#define bstr__alloc(x) calloc (1, x)
-#endif
-#endif
-*/
-
-/*
-#ifndef bstr__free
-#define bstr__free(p) free (p)
-#endif
-
-#ifndef bstr__realloc
-#define bstr__realloc(p,x) realloc ((p), (x))
-#endif
-*/
 
 #ifndef bstr__memcpy
 #define bstr__memcpy(d,s,l) memcpy ((d), (s), (l))
@@ -285,8 +260,8 @@ bstring bfromcstralloc (int mlen, const char * str) {
  *         length len.
  */
 bstring blk2bstr (const void * blk, int len) {
-bstring b;
-int i;
+   bstring b;
+   int i;
 
 	if (blk == NULL || len < 0) return NULL;
 	/* b = (bstring) bstr__alloc (sizeof (struct tagbstring)); */
@@ -967,7 +942,7 @@ int i, v, m;
 
 /** \brief Create a bstring which is the substring of b starting from position
  *         left and running for a length len (clamped by the end of the bstring
- *         b.)  If b is detectably invalid, then NULL is returned.  The section
+ *         b.) If b is detectably invalid, then NULL is returned.  The section
  *         described by (left, len) is clamped to the boundaries of b.
  */
 bstring bmidstr (const_bstring b, int left, int len) {
@@ -1169,14 +1144,14 @@ unsigned char * d0, * d1;
 	return BSTR_ERR;
 }
 
-/*  int binstrcaseless (const_bstring b1, int pos, const_bstring b2)
- *
- *  Search for the bstring b2 in b1 starting from position pos, and searching
- *  forward but without regard to case.  If it is found then return with the
- *  first position where it is found, otherwise return BSTR_ERR.  Note that
- *  this is just a brute force string searcher that does not attempt clever
- *  things like the Boyer-Moore search algorithm.  Because of this there are
- *  many degenerate cases where this can take much longer than it needs to.
+/**
+ * \brief   Search for the bstring b2 in b1 starting from position pos, and
+ *          searching forward but without regard to case.  If it is found
+ *          then return with the first position where it is found, otherwise
+ *          return BSTR_ERR. Note that this is just a brute force string
+ *          searcher that does not attempt clever things like the Boyer-Moore
+ *          search algorithm. Because of this there are many degenerate cases
+ *          where this can take much longer than it needs to.
  */
 int binstrcaseless (const_bstring b1, int pos, const_bstring b2) {
 int j, i, l, ll;
@@ -1217,14 +1192,14 @@ unsigned char * d0, * d1;
 	return BSTR_ERR;
 }
 
-/*  int binstrrcaseless (const_bstring b1, int pos, const_bstring b2)
- *
- *  Search for the bstring b2 in b1 starting from position pos, and searching
- *  backward but without regard to case.  If it is found then return with the
- *  first position where it is found, otherwise return BSTR_ERR.  Note that
- *  this is just a brute force string searcher that does not attempt clever
- *  things like the Boyer-Moore search algorithm.  Because of this there are
- *  many degenerate cases where this can take much longer than it needs to.
+/**
+ * \brief   Search for the bstring b2 in b1 starting from position pos, and
+ *          backward but without regard to case. If it is found then return
+ *          with the first position where it is found, otherwise return
+ *          BSTR_ERR. Note that this is just a brute force string searcher
+ *          that does not attempt clever things like the Boyer-Moore search
+ *          algorithm. Because of this there are many degenerate cases where
+ *          this can take much longer than it needs to.
  */
 int binstrrcaseless (const_bstring b1, int pos, const_bstring b2) {
 int j, i, l;
@@ -1266,13 +1241,12 @@ unsigned char * d0, * d1;
 }
 
 
-/*  int bstrchrp (const_bstring b, int c, int pos)
- *
- *  Search for the character c in b forwards from the position pos
- *  (inclusive).
+/**
+ * \brief   Search for the character c in b forwards from the position pos
+ *          (inclusive).
  */
 int bstrchrp (const_bstring b, int c, int pos) {
-unsigned char * p;
+   unsigned char * p;
 
 	if (b == NULL || b->data == NULL || b->slen <= pos || pos < 0)
 		return BSTR_ERR;
@@ -1282,13 +1256,12 @@ unsigned char * p;
 	return BSTR_ERR;
 }
 
-/*  int bstrrchrp (const_bstring b, int c, int pos)
- *
- *  Search for the character c in b backwards from the position pos in string
- *  (inclusive).
+/**
+ * \brief   Search for the character c in b backwards from the position pos in
+ *          string (inclusive).
  */
 int bstrrchrp (const_bstring b, int c, int pos) {
-int i;
+   int i;
 
 	if (b == NULL || b->data == NULL || b->slen <= pos || pos < 0)
 		return BSTR_ERR;
@@ -1349,14 +1322,13 @@ int i;
 	return BSTR_ERR;
 }
 
-/*  int binchr (const_bstring b0, int pos, const_bstring b1);
- *
- *  Search for the first position in b0 starting from pos or after, in which
- *  one of the characters in b1 is found and return it.  If such a position
- *  does not exist in b0, then BSTR_ERR is returned.
+/**
+ * \brief   Search for the first position in b0 starting from pos or after, in
+ *          which one of the characters in b1 is found and return it. If such
+ *          a position does not exist in b0, then BSTR_ERR is returned.
  */
 int binchr (const_bstring b0, int pos, const_bstring b1) {
-struct charField chrs;
+   struct charField chrs;
 	if (pos < 0 || b0 == NULL || b0->data == NULL ||
 	    b0->slen <= pos) return BSTR_ERR;
 	if (1 == b1->slen) return bstrchrp (b0, b1->data[0], pos);
@@ -1367,7 +1339,7 @@ struct charField chrs;
 /* Inner engine for binchrr */
 static int binchrrCF (const unsigned char * data, int pos,
                       const struct charField * cf) {
-int i;
+   int i;
 	for (i=pos; i >= 0; i--) {
 		unsigned int c = (unsigned int) data[i];
 		if (testInCharField (cf, c)) return i;
@@ -1375,14 +1347,13 @@ int i;
 	return BSTR_ERR;
 }
 
-/*  int binchrr (const_bstring b0, int pos, const_bstring b1);
- *
- *  Search for the last position in b0 no greater than pos, in which one of
- *  the characters in b1 is found and return it.  If such a position does not
- *  exist in b0, then BSTR_ERR is returned.
+/**
+ * \brief   Search for the last position in b0 no greater than pos, in which
+ *          one of the characters in b1 is found and return it. If such a
+ *          position does not exist in b0, then BSTR_ERR is returned.
  */
 int binchrr (const_bstring b0, int pos, const_bstring b1) {
-struct charField chrs;
+   struct charField chrs;
 	if (pos < 0 || b0 == NULL || b0->data == NULL || b1 == NULL ||
 	    b0->slen < pos) return BSTR_ERR;
 	if (pos == b0->slen) pos--;
@@ -1391,11 +1362,10 @@ struct charField chrs;
 	return binchrrCF (b0->data, pos, &chrs);
 }
 
-/*  int bninchr (const_bstring b0, int pos, const_bstring b1);
- *
- *  Search for the first position in b0 starting from pos or after, in which
- *  none of the characters in b1 is found and return it.  If such a position
- *  does not exist in b0, then BSTR_ERR is returned.
+/**
+ * \brief   Search for the first position in b0 starting from pos or after, in
+ *          which none of the characters in b1 is found and return it. If such
+ *          a position does not exist in b0, then BSTR_ERR is returned.
  */
 int bninchr (const_bstring b0, int pos, const_bstring b1) {
 struct charField chrs;
@@ -1406,11 +1376,10 @@ struct charField chrs;
 	return binchrCF (b0->data, b0->slen, pos, &chrs);
 }
 
-/*  int bninchrr (const_bstring b0, int pos, const_bstring b1);
- *
- *  Search for the last position in b0 no greater than pos, in which none of
- *  the characters in b1 is found and return it.  If such a position does not
- *  exist in b0, then BSTR_ERR is returned.
+/**
+ * \brief   Search for the last position in b0 no greater than pos, in which
+ *          none of the characters in b1 is found and return it. If such a
+ *          position does not exist in b0, then BSTR_ERR is returned.
  */
 int bninchrr (const_bstring b0, int pos, const_bstring b1) {
 struct charField chrs;
@@ -1422,12 +1391,12 @@ struct charField chrs;
 	return binchrrCF (b0->data, pos, &chrs);
 }
 
-/*  int bsetstr (bstring b0, int pos, bstring b1, unsigned char fill)
- *
- *  Overwrite the string b0 starting at position pos with the string b1. If
- *  the position pos is past the end of b0, then the character "fill" is
- *  appended as necessary to make up the gap between the end of b0 and pos.
- *  If b1 is NULL, it behaves as if it were a 0-length string.
+/**
+ * \brief   Overwrite the string b0 starting at position pos with the string
+ *          b1. If the position pos is past the end of b0, then the character
+ *          "fill" is appended as necessary to make up the gap between the end
+ *          of b0 and pos. If b1 is NULL, it behaves as if it were a 0-length
+ *          string.
  */
 int bsetstr (bstring b0, int pos, const_bstring b1, unsigned char fill) {
 int d, newlen;
@@ -1479,13 +1448,12 @@ bstring aux = (bstring) b1;
 	return BSTR_OK;
 }
 
-/*  int binsertblk (bstring b, int pos, const void * blk, int len,
- *                  unsigned char fill)
- *
- *  Inserts the block of characters at blk with length len into b at position
- *  pos.  If the position pos is past the end of b, then the character "fill"
- *  is appended as necessary to make up the gap between the end of b1 and pos.
- *  Unlike bsetstr, binsert does not allow b2 to be NULL.
+/**
+ * \brief   Inserts the block of characters at blk with length len into b at
+ *          position pos. If the position pos is past the end of b, then the
+ *          character "fill" is appended as necessary to make up the gap
+ *          between the end of b1 and pos. Unlike bsetstr, binsert does not
+ *          allow b2 to be NULL.
  */
 int binsertblk (bstring b, int pos, const void * blk, int len,
                 unsigned char fill) {
@@ -1533,23 +1501,20 @@ unsigned char* aux = (unsigned char*) blk;
 	return BSTR_OK;
 }
 
-/*  int binsert (bstring b1, int pos, const_bstring b2, unsigned char fill)
- *
- *  Inserts the string b2 into b1 at position pos.  If the position pos is
- *  past the end of b1, then the character "fill" is appended as necessary to
- *  make up the gap between the end of b1 and pos.  Unlike bsetstr, binsert
- *  does not allow b2 to be NULL.
+/**
+ * \brief   Inserts the string b2 into b1 at position pos. If the position
+ *          pos is past the end of b1, then the character "fill" is appended
+ *          as necessary to make up the gap between the end of b1 and pos.
+ *          Unlike bsetstr, binsert does not allow b2 to be NULL.
  */
 int binsert (bstring b1, int pos, const_bstring b2, unsigned char fill) {
 	if (NULL == b2 || (b2->mlen > 0 && b2->slen > b2->mlen)) return BSTR_ERR;
 	return binsertblk (b1, pos, b2->data, b2->slen, fill);
 }
 
-/*  int breplace (bstring b1, int pos, int len, bstring b2,
- *                unsigned char fill)
- *
- *  Replace a section of a string from pos for a length len with the string
- *  b2. fill is used is pos > b1->slen.
+/**
+ * \brief   Replace a section of a string from pos for a length len with the
+ *          string b2. fill is used is pos > b1->slen.
  */
 int breplace (bstring b1, int pos, int len, const_bstring b2,
               unsigned char fill) {
@@ -1755,37 +1720,32 @@ bstring auxr = (bstring) repl;
 	return ret;
 }
 
-/*  int bfindreplace (bstring b, const_bstring find, const_bstring repl,
- *                    int pos)
- *
- *  Replace all occurrences of a find string with a replace string after a
- *  given point in a bstring.
+/**
+ * \brief   Replace all occurrences of a find string with a replace string
+ *          after a given point in a bstring.
  */
 int bfindreplace (bstring b, const_bstring find, const_bstring repl,
                   int pos) {
 	return findreplaceengine (b, find, repl, pos, binstr);
 }
 
-/*  int bfindreplacecaseless (bstring b, const_bstring find,
- *                            const_bstring repl, int pos)
- *
- *  Replace all occurrences of a find string, ignoring case, with a replace
- *  string after a given point in a bstring.
+/**
+ * \brief   Replace all occurrences of a find string, ignoring case, with a
+ *          replace string after a given point in a bstring.
  */
 int bfindreplacecaseless (bstring b, const_bstring find, const_bstring repl,
                           int pos) {
 	return findreplaceengine (b, find, repl, pos, binstrcaseless);
 }
 
-/*  int binsertch (bstring b, int pos, int len, unsigned char fill)
- *
- *  Inserts the character fill repeatedly into b at position pos for a
- *  length len.  If the position pos is past the end of b, then the
- *  character "fill" is appended as necessary to make up the gap between the
- *  end of b and the position pos + len.
+/**
+ * \brief   Inserts the character fill repeatedly into b at position pos for a
+ *          length len. If the position pos is past the end of b, then the
+ *          character "fill" is appended as necessary to make up the gap
+ *          between the end of b and the position pos + len.
  */
 int binsertch (bstring b, int pos, int len, unsigned char fill) {
-int d, l, i;
+   int d, l, i;
 
 	if (pos < 0 || b == NULL || b->slen < 0 || b->mlen < b->slen ||
 	    b->mlen <= 0 || len < 0) return BSTR_ERR;
@@ -1814,12 +1774,12 @@ int d, l, i;
 	return BSTR_OK;
 }
 
-/*  int bpattern (bstring b, int len)
- *
- *  Replicate the bstring, b in place, end to end repeatedly until it
- *  surpasses len characters, then chop the result to exactly len characters.
- *  This function operates in-place.  The function will return with BSTR_ERR
- *  if b is NULL or of length 0, otherwise BSTR_OK is returned.
+/**
+ * \brief   Replicate the bstring, b in place, end to end repeatedly until it
+ *          surpasses len characters, then chop the result to exactly len
+ *          characters. This function operates in-place. The function will
+ *          return with BSTR_ERR if b is NULL or of length 0, otherwise
+ *          BSTR_OK is returned.
  */
 int bpattern (bstring b, int len) {
 int i, d;
@@ -2927,18 +2887,17 @@ extern int vsnprintf (char *buf, size_t count, const char *format, va_list arg);
    than n, then changing n to the return value will reduce the number of
    iterations required. */
 
-/*  int bformata (bstring b, const char * fmt, ...)
- *
- *  After the first parameter, it takes the same parameters as printf (), but
- *  rather than outputting results to stdio, it appends the results to
- *  a bstring which contains what would have been output. Note that if there
- *  is an early generation of a '\0' character, the bstring will be truncated
- *  to this end point.
+/**
+ * \brief   After the first parameter, it takes the same parameters as
+ *          printf(), but rather than outputting results to stdio, it appends
+ *          the results to a bstring which contains what would have been
+ *          output.Note that if there is an early generation of a '\0'
+ *          character, the bstring will be truncated to this end point.
  */
 int bformata (bstring b, const char * fmt, ...) {
-va_list arglist;
-bstring buff;
-int n, r;
+   va_list arglist;
+   bstring buff;
+   int n, r;
 
 	if (b == NULL || fmt == NULL || b->data == NULL || b->mlen <= 0
 	 || b->slen < 0 || b->slen > b->mlen) return BSTR_ERR;
@@ -2976,12 +2935,12 @@ int n, r;
 	return r;
 }
 
-/*  int bassignformat (bstring b, const char * fmt, ...)
- *
- *  After the first parameter, it takes the same parameters as printf (), but
- *  rather than outputting results to stdio, it outputs the results to
- *  the bstring parameter b. Note that if there is an early generation of a
- *  '\0' character, the bstring will be truncated to this end point.
+/**
+ * \brief   After the first parameter, it takes the same parameters as
+ *          printf(), but rather than outputting results to stdio, it outputs
+ *          the results to the bstring parameter b. Note that if there is an
+ *          early generation of a '\0' character, the bstring will be
+ *          truncated to this end point.
  */
 int bassignformat (bstring b, const char * fmt, ...) {
 va_list arglist;
@@ -3024,17 +2983,16 @@ int n, r;
 	return r;
 }
 
-/*  bstring bformat (const char * fmt, ...)
- *
- *  Takes the same parameters as printf (), but rather than outputting results
- *  to stdio, it forms a bstring which contains what would have been output.
- *  Note that if there is an early generation of a '\0' character, the
- *  bstring will be truncated to this end point.
+/**
+ * \brief   Takes the same parameters as printf(), but rather than outputting
+ *          results to stdio, it forms a bstring which contains what would
+ *          have been output. Note that if there is an early generation of a
+ *          '\0' character, the bstring will be truncated to this end point.
  */
 bstring bformat (const char * fmt, ...) {
-va_list arglist;
-bstring buff;
-int n, r;
+   va_list arglist;
+   bstring buff;
+   int n, r;
 
 	if (fmt == NULL) return NULL;
 
@@ -3069,28 +3027,28 @@ int n, r;
 	return buff;
 }
 
-/*  int bvcformata (bstring b, int count, const char * fmt, va_list arglist)
+/**
+ * \brief   The bvcformata function formats data under control of the format
+ *          control string fmt and attempts to append the result to b. The fmt
+ *          parameter is the same as that of the printf function. The variable
+ *          argument list is replaced with arglist, which has been initialized
+ *          by the va_start macro. The size of the output is upper bounded by
+ *          count. If the required output exceeds count, the string b is not
+ *          augmented with any contents and a value below BSTR_ERR is returned.
+ *          If a value below -count is returned then it is recommended that
+ *          the negative of this value be used as an update to the count in a
+ *          subsequent pass. On other errors, such as running out of memory,
+ *          parameter errors or numeric wrap around BSTR_ERR is returned.
+ *          BSTR_OK is returned when the output is successfully generated and
+ *          appended to b.
  *
- *  The bvcformata function formats data under control of the format control
- *  string fmt and attempts to append the result to b.  The fmt parameter is
- *  the same as that of the printf function.  The variable argument list is
- *  replaced with arglist, which has been initialized by the va_start macro.
- *  The size of the output is upper bounded by count.  If the required output
- *  exceeds count, the string b is not augmented with any contents and a value
- *  below BSTR_ERR is returned.  If a value below -count is returned then it
- *  is recommended that the negative of this value be used as an update to the
- *  count in a subsequent pass.  On other errors, such as running out of
- *  memory, parameter errors or numeric wrap around BSTR_ERR is returned.
- *  BSTR_OK is returned when the output is successfully generated and
- *  appended to b.
- *
- *  Note: There is no sanity checking of arglist, and this function is
- *  destructive of the contents of b from the b->slen point onward.  If there
- *  is an early generation of a '\0' character, the bstring will be truncated
- *  to this end point.
+ *          Note: There is no sanity checking of arglist, and this function is
+ *          destructive of the contents of b from the b->slen point onward.
+ *          If there is an early generation of a '\0' character, the bstring
+ *          will be truncated to this end point.
  */
 int bvcformata (bstring b, int count, const char * fmt, va_list arg) {
-int n, r, l;
+   int n, r, l;
 
 	if (b == NULL || fmt == NULL || count <= 0 || b->data == NULL
 	 || b->mlen <= 0 || b->slen < 0 || b->slen > b->mlen) return BSTR_ERR;

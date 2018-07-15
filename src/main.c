@@ -5,7 +5,7 @@
 
 #include "netipc.h"
 #include "http.h"
-#include "vector.h"
+#include "libvcol.h"
 #include "htmtree.h"
 
 //#define ERR_ALLOCATION 0x02

@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "mem.h"
+#include "libvcol.h"
 
 #define html_bstring_debug( bstr_res ) \
    fprintf( stderr, __FILE__ ": %d: bstring error: %d\n", __LINE__, bstr_res )

@@ -2,10 +2,8 @@
 #ifndef HTTP_H
 #define HTTP_H
 
-#include "bstrlib/bstrlib.h"
+#include "libvcol.h"
 #include "netipc.h"
-#include "hashmap.h"
-#include "htmtree.h"
 
 enum HTTP_TYPE {
    HTTP_TYPE_NONE,

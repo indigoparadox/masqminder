@@ -9,7 +9,7 @@
 #endif /* _WIN32 && USE_NETWORK */
 
 #include "netipc.h"
-#include "mem.h"
+#include "libvcol.h"
 
 #ifdef _GNU_SOURCE
 #include <unistd.h>

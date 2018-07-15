@@ -4,8 +4,7 @@
 
 #include <stdint.h>
 
-#include "bstrlib/bstrlib.h"
-#include "mem.h"
+#include "libvcol.h"
 
 #define IPC_BUFFER_LEN 80
 

@@ -1,11 +1,15 @@
 /*
- * Generic hashmap manipulation functions
- *
  * Originally by Elliot C Back - http://elliottback.com/wp/hashmap-implementation-in-c/
  *
  * Modified by Pete Warden to fix a serious performance problem, support strings as keys
  * and removed thread synchronization - http://petewarden.typepad.com
  */
+
+/**
+ * @file
+ * @brief Generic hashmap manipulation functions
+ */
+
 #ifndef __HASHMAP_H__
 #define __HASHMAP_H__
 
@@ -50,7 +54,10 @@ struct HASHMAP {
 
 #define hashmap_new( m ) \
    m = mem_alloc( 1, struct HASHMAP ); \
-   scaffold_check_null( m ); \
+   if( NULL == m ) { \
+      /* TODO: Error. */ \
+      goto cleanup; \
+   } \
    hashmap_init( m );
 
 void hashmap_init( struct HASHMAP* m );

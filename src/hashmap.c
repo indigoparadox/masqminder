@@ -461,6 +461,10 @@ cleanup:
    return element_out;
 }
 
+/**
+ * \brief Return TRUE if the given hashmap has an element stored under the
+ *        given key, or FALSE otherwise.
+ */
 BOOL hashmap_contains_key( struct HASHMAP* m, const bstring key ) {
    int curr;
    int i;
@@ -705,8 +709,8 @@ cleanup:
    return removed;
 }
 
-/*
- * Remove an element with that key from the map
+/**
+ * \brief Remove an element with the given key from the given hashmap.
  */
 BOOL hashmap_remove( struct HASHMAP* m, const bstring key ) {
    size_t i,
@@ -781,7 +785,8 @@ size_t hashmap_remove_all( struct HASHMAP* m ) {
 }
 
 /**
- * @brief Deallocate the hashmap.
+ * \brief Prepare the hashmap to be deallocated, but do not attempt to
+ *        deallocate the outer structure.
  */
 void hashmap_cleanup( struct HASHMAP* m ) {
    if(
@@ -799,6 +804,10 @@ cleanup:
    return;
 }
 
+/**
+ * \brief Given a pointer to a pointer to a hashmap [sic], prepare and
+ *        deallocate the hashmap and set its pointer to NULL.
+ */
 void hashmap_free( struct HASHMAP** m ) {
    if( NULL != *m ) {
       hashmap_cleanup( *m );
@@ -807,7 +816,9 @@ void hashmap_free( struct HASHMAP** m ) {
    }
 }
 
-/* Return the length of the hashmap */
+/**
+ * \brief Return the length of the hashmap.
+ */
 size_t hashmap_count( const struct HASHMAP* m ) {
    size_t sz_out = 0;
    if(
@@ -835,6 +846,9 @@ void hashmap_lock( struct HASHMAP* m, BOOL lock ) {
    #endif /* USE_THREADS */
 }
 
+/**
+ * \brief Return TRUE if the hashmap m is valid or FALSE if it is not.
+ */
 BOOL hashmap_is_valid( const struct HASHMAP* m ) {
    return NULL != m && HASHMAP_SENTINAL == m->sentinal;
 }

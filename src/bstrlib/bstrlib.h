@@ -5,10 +5,9 @@
  * on usage and license.
  */
 
-/*
- * bstrlib.h
- *
- * This file is the interface for the core bstring functions.
+/**
+ * @file
+ * @brief This file is the interface for the core bstring functions.
  */
 
 #ifndef BSTRLIB_INCLUDE
@@ -162,7 +161,21 @@ extern int binstrcaseless (const_bstring s1, int pos, const_bstring s2);
 extern int binstrrcaseless (const_bstring s1, int pos, const_bstring s2);
 extern int bstrchrp (const_bstring b, int c, int pos);
 extern int bstrrchrp (const_bstring b, int c, int pos);
+/**
+ * \brief   Search for the character c in the bstring b forwards from the
+ *          start of the bstring. Returns the position of the found character
+ *          or BSTR_ERR if it is not found.
+ *
+ *          NOTE: This has been implemented as a macro on top of bstrchrp().
+ */
 #define bstrchr(b,c) bstrchrp ((b), (c), 0)
+/**
+ * \brief   Search for the character c in the bstring b backwards from the
+ *          end of the bstring. Returns the position of the found character
+ *          or BSTR_ERR if it is not found.
+ *
+ *          NOTE: This has been implemented as a macro on top of bstrrchrp().
+ */
 #define bstrrchr(b,c) bstrrchrp ((b), (c), blength(b)-1)
 extern int binchr (const_bstring b0, int pos, const_bstring b1);
 extern int binchrr (const_bstring b0, int pos, const_bstring b1);
@@ -292,6 +305,10 @@ struct tagbstring {
 
 /* Accessor macros */
 #define blengthe(b, e)      (((b) == (void *)0 || (b)->slen < 0) ? (int)(e) : ((b)->slen))
+/**
+ * \brief   Returns the length of the bstring.  If the bstring is NULL, the
+ *          length returned is 0.
+ */
 #define blength(b)          (blengthe ((b), 0))
 #define bdataofse(b, o, e)  (((b) == (void *)0 || (b)->data == (void*)0) ? (char *)(e) : ((char *)(b)->data) + (o))
 #define bdataofs(b, o)      (bdataofse ((b), (o), (void *)0))
@@ -310,14 +327,75 @@ struct tagbstring {
 #endif
 
 /* Static constant block parameter pair */
+/**
+ * \brief   The bsStaticBlkParms macro emits a pair of comma seperated
+ *          parameters corresponding to the block parameters for the block
+ *          functions in Bstrlib (i.e., blk2bstr(), bcatblk(), blk2tbstr(),
+ *          bisstemeqblk(), bisstemeqcaselessblk().)
+ *          Note that this macro is only well defined for string literal
+ *          arguments.
+ *
+ *          Examples:
+ *
+ *          bstring b = blk2bstr(bsStaticBlkParms("Fast init. "));
+ *
+ *          bcatblk(b, bsStaticBlkParms("No frills fast concatenation."));
+ *
+ *          These are faster than using bfromcstr() and bcatcstr()
+ *          respectively because the length of the inline string is known as
+ *          a compile time constant. Also note that seperate struct tagbstring
+ *          declarations for holding the output of a bsStatic() macro are not
+ *          required.
+ */
 #define bsStaticBlkParms(q) ((void *)("" q "")), ((int) sizeof(q)-1)
-
+/**
+ * \brief   Append a string literal to bstring b.  Returns 0 if successful, or
+ *          BSTR_ERR if some error has occurred.  The string literal parameter
+ *          is enforced as literal at compile time.
+ */
 #define bcatStatic(b,s)     ((bcatblk)((b), bsStaticBlkParms(s)))
+/**
+ * \brief   Allocate a bstring with the contents of a string literal. Returns
+ *          NULL if an error has occurred (ran out of memory). The string
+ *          literal parameter is enforced as literal at compile time.
+ */
 #define bfromStatic(s)      ((blk2bstr)(bsStaticBlkParms(s)))
+/**
+ * \brief   Assign the contents of a string literal to the bstring b. The
+ *          string literal parameter is enforced as literal at compile time.
+ */
 #define bassignStatic(b,s)  ((bassignblk)((b), bsStaticBlkParms(s)))
+/**
+ * \brief   Inserts the string literal into s1 at position pos. If the
+ *          position pos is past the end of s1, then the character "fill"
+ *          is appended as necessary to make up the gap between the end of s1
+ *          and pos. The value BSTR_OK is returned if the operation is
+ *          successful, otherwise BSTR_ERR is returned.
+ */
 #define binsertStatic(b,p,s,f) ((binsertblk)((b), (p), bsStaticBlkParms(s), (f)))
+/**
+ * \brief   Join the entries of a bstrList into one bstring by sequentially
+ *          concatenating them with the string literal in between. If there
+ *          is an error NULL is returned, otherwise a bstring with the correct
+ *          result is returned. See bstrListCreate() above for structure of
+ *          struct bstrList.
+ */
 #define bjoinStatic(b,s)    ((bjoinblk)((b), bsStaticBlkParms(s)))
+/**
+ * \brief   Compare the string b with the string literal. If the content
+ *          differs, 0 is returned, if the content is the same, 1 is returned,
+ *          if there is an error, -1 is returned.  If the length of the
+ *          strings are different, this function is O(1). '\0' characters
+ *          are not treated in any special way.
+ */
 #define biseqStatic(b,s)    ((biseqblk)((b), bsStaticBlkParms(s)))
+/**
+ * \brief   Compare beginning of bstring b with a string literal for equality.
+ *          If the beginning of b differs from the memory block (or if b is
+ *          too short), 0 is returned, if the bstrings are the same, 1 is
+ *          returned, if there is an error, -1 is returned. The string literal
+ *          parameter is enforced as literal at compile time.
+ */
 #define bisstemeqStatic(b,s) ((bisstemeqblk)((b), bsStaticBlkParms(s)))
 #define biseqcaselessStatic(b,s) ((biseqcaselessblk)((b), bsStaticBlkParms(s)))
 #define bisstemeqcaselessStatic(b,s) ((bisstemeqcaselessblk)((b), bsStaticBlkParms(s)))
@@ -400,8 +478,35 @@ struct tagbstring {
 }
 
 /* Write protection macros */
+/**
+ * \brief   Disallow bstring from being written to via the bstrlib API.
+ *          Attempts to write to the resulting tagbstring from any bstrlib
+ *          function will lead to BSTR_ERR being returned.
+ *
+ *          Note: bstrings which are write protected cannot be destroyed via
+ *          bdestroy.
+ *
+ *          Note to C++ users: Setting a CBString as write protected will not
+ *          prevent it from being destroyed by the destructor.
+ */
 #define bwriteprotect(t)     { if ((t).mlen >=  0) (t).mlen = -1; }
+/**
+ * \brief   Allow bstring to be written to via the bstrlib API. Note that such
+ *          an action makes the bstring both writable and destroyable. If the
+ *          bstring is not legitimately writable (as is the case for struct
+ *          tagbstrings initialized with a bsStatic value), the results of
+ *          this are undefined.
+ *
+ *          Note that invoking the bwriteallow macro may increase the number
+ *          of reallocs by one more than necessary for every call to
+ *          bwriteallow interleaved with any bstring API which writes to this
+ *          bstring.
+ */
 #define bwriteallow(t)       { if ((t).mlen == -1) (t).mlen = (t).slen + ((t).slen == 0); }
+/**
+ * \brief   Returns 1 if the bstring is write protected, otherwise 0 is
+ *          returned.
+ */
 #define biswriteprotected(t) ((t).mlen <= 0)
 
 #ifdef __cplusplus
